@@ -1,11 +1,14 @@
 import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { Link, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthUserContext } from "../Context/UserContext";
+
 const Register = () => {
   const { createUser, updateUserProfile, emailVerification } =
     useContext(AuthUserContext);
+  const [accepted, setAccepted] = useState(false);
 
   // register function
   const handleRegister = (event) => {
@@ -23,6 +26,7 @@ const Register = () => {
         // Signed in
         const user = userCredential.user;
         console.log(user);
+        form.reset();
         toast.success("usercreated successfully", { autoClose: 8000 });
 
         // ...
@@ -35,6 +39,7 @@ const Register = () => {
             // ...
             emailVerification()
               .then(() => {
+                <Navigate to="/login"></Navigate>;
                 toast.success(
                   "email verifiaction send to yor account please check your profile",
                   { autoClose: 5000 }
@@ -56,6 +61,9 @@ const Register = () => {
         toast.error(errorMessage, { autoClose: 5000 });
         // ..
       });
+  };
+  const handleCheckbox = (e) => {
+    setAccepted(e.target.checked);
   };
   return (
     <div>
@@ -99,9 +107,19 @@ const Register = () => {
             required
           />
         </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Submit
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check
+            onClick={handleCheckbox}
+            type="checkbox"
+            label={
+              <>
+                Accept <Link to="/terms">terms</Link> and conditions
+              </>
+            }
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit" disabled={!accepted}>
+          Register
         </Button>
       </Form>
     </div>

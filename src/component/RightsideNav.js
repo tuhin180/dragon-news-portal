@@ -12,10 +12,14 @@ import {
   FaInstagram,
   FaTwitter,
 } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AuthUserContext } from "../Context/UserContext";
 import RightNavCarousel from "./RightNavCarousel";
 
 const RightsideNav = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const { signInWithGoogle } = useContext(AuthUserContext);
   const googleProvider = new GoogleAuthProvider();
 
@@ -25,6 +29,7 @@ const RightsideNav = () => {
     signInWithGoogle(googleProvider)
       .then((result) => {
         const user = result.user;
+        navigate(from, { replace: true });
         console.log(user);
       })
       .catch((error) => {

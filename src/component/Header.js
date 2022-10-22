@@ -49,7 +49,7 @@ const Header = () => {
               <Nav.Link href="#pricing">Pricing</Nav.Link>
             </Nav>
             <Nav>
-              {user?.uid ? (
+              {user?.displayName ? (
                 <>
                   <Nav.Link to="/">{user?.displayName}</Nav.Link>
                   <Link>
@@ -69,6 +69,7 @@ const Header = () => {
                 </>
               )}
             </Nav>
+
             <div className=" d-lg-none ">
               <LeftsideNav></LeftsideNav>
             </div>
