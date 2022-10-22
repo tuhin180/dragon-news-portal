@@ -18,14 +18,12 @@ const Header = () => {
 
   const handleLogOut = () => {
     systemLogOut()
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
+      .then(() => {
         toast.success("logout successfully", { autoClose: 5000 });
       })
       .catch((error) => {
         // An error happened.
-        console.error(error);
+        console.error(error.errorMessage);
       });
   };
 
@@ -49,14 +47,29 @@ const Header = () => {
               <Nav.Link href="#pricing">Pricing</Nav.Link>
             </Nav>
             <Nav>
-              {user?.displayName ? (
+              {user?.uid ? (
                 <>
-                  <Nav.Link to="/">{user?.displayName}</Nav.Link>
-                  <Link>
-                    <Button onClick={handleLogOut} variant="primary">
-                      Logout
+                  <Link className="me-2" to="/profile">
+                    <Button variant="outline-primary">
+                      {user?.displayName}
                     </Button>
+                    {user?.photoURL ? (
+                      <Image
+                        style={{ height: "30px" }}
+                        roundedCircle
+                        src={user?.photoURL}
+                      ></Image>
+                    ) : (
+                      <FaUser></FaUser>
+                    )}
                   </Link>
+                  <Button
+                    className="ms-2"
+                    onClick={handleLogOut}
+                    variant="primary"
+                  >
+                    Logout
+                  </Button>
                 </>
               ) : (
                 <>

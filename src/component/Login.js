@@ -29,7 +29,11 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        navigate(from, { replace: true });
+        if (user.emailVerified) {
+          navigate(from, { replace: true });
+        } else {
+          return toast.error("please verified your email");
+        }
         setError("");
         console.log(user);
         toast.success("loged in succesfull", { autoClose: 5000 });

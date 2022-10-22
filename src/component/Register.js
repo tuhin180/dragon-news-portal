@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthUserContext } from "../Context/UserContext";
 
@@ -9,6 +9,9 @@ const Register = () => {
   const { createUser, updateUserProfile, emailVerification } =
     useContext(AuthUserContext);
   const [accepted, setAccepted] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   // register function
   const handleRegister = (event) => {
@@ -39,7 +42,7 @@ const Register = () => {
             // ...
             emailVerification()
               .then(() => {
-                <Navigate to="/login"></Navigate>;
+                navigate(from, { replace: true });
                 toast.success(
                   "email verifiaction send to yor account please check your profile",
                   { autoClose: 5000 }
